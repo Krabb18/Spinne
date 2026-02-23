@@ -1,0 +1,7 @@
+number b=19;
+
+string a="hello WC";
+
+bool hi = false;
+
+print(a);

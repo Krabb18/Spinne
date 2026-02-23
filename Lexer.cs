@@ -190,6 +190,7 @@ namespace WC_Language
                 else if (text == "bool") { newToken.type = TokenType.BOOLDEKL;  }
                 else if(text == "if") { newToken.type = TokenType.IF;  }
                 else if(text == "else") { newToken.type = TokenType.ELSE;  }
+                else if(text == "while") { newToken.type = TokenType.WHILE; }
                 else if(text == "elseif") { newToken.type = TokenType.ELSEIF; text = "else if"; }
                 else if(text == "print") { newToken.type = TokenType.PRINT; text = "console.log"; }
 

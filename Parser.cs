@@ -11,6 +11,8 @@ namespace WC_Language
     {
         Lexer lexer;
         int index = 0;
+        public bool succcess = true;
+        public bool compiled = true;
         public Parser(Lexer lexer) 
         {
             this.lexer = lexer;
@@ -18,31 +20,39 @@ namespace WC_Language
 
         public void CheckIfValid()
         {
+            succcess = true;
+            compiled = true;
             string log = "Compiled Succesfully :)";
             for(int i = 0; i<lexer.tokens.Count-1; i++)
             {
                 if(index < lexer.tokens.Count)
                 {
+                   
                     if (lexer.tokens[index] == TokenType.STRINGDEKL)
                     {
-                        bool succcess = CheckValidStringDekl();
-                        if (!succcess) { log = "Compilation failed :("; }
+                        succcess = CheckValidStringDekl();
+                        
                     }
                     else if (lexer.tokens[index] == TokenType.NUMBERDEKL)
                     {
-                        bool succcess = CheckValidNumberDekl();
-                        if (!succcess) { log = "Compilation failed :("; }
+                        succcess = CheckValidNumberDekl();
                     }
                     else if (lexer.tokens[index] == TokenType.PRINT)
                     {
-                        bool success = CheckValidPrintDekl();
-                        if (!success) { log = "Compilation failed :("; }
+                        succcess = CheckValidPrintDekl();
                     }
                     else if (lexer.tokens[index] == TokenType.BOOLDEKL)
                     {
-                        bool success = CheckValidBoolDekl();
-                        if (!success) { log = "Compilation failed :("; }
+                        succcess = CheckValidBoolDekl();
                     }
+                    else if (lexer.tokens[index] == TokenType.WHILE)
+                    {
+                        succcess = CheckValidWhileDekl();
+                    }
+
+                    if (!succcess) { log = "Compilation failed :(";compiled = false; }
+
+                  
                 }
 
                 index++;
@@ -223,6 +233,50 @@ namespace WC_Language
             else
             {
                 Console.WriteLine("Need variablename after bool deklaration");
+            }
+
+            return valid;
+        }
+
+        bool CheckValidWhileDekl()
+        {
+            bool valid = true;
+
+            index++;
+            if (lexer.tokens[index] == TokenType.OPEN)
+            {
+                index++;
+
+                if (lexer.tokens[index] == TokenType.BOOL)
+                {
+                    index++;
+                    if (lexer.tokens[index] == TokenType.CLOSE)
+                    {
+                        index++;
+
+                        //Solange warten bis das open bracket kommt
+                        while (lexer.tokens[index] == TokenType.NEWLINE) { index++; }
+                        if(lexer.tokens[index] == TokenType.OPENBRACKET)
+                        {
+                            //schauen ob es das passende close bracket gibt
+                        }
+                        else
+                        {
+                            valid = false;
+                            Console.WriteLine("You need an open bracket!!!");
+                        }
+                    }
+                }
+                else
+                {
+                    valid = false;
+                    Console.WriteLine("The While loop need an condition");
+                }
+            }
+            else
+            {
+                valid = false;
+                Console.WriteLine("Did you forgot the ( ?");
             }
 
             return valid;

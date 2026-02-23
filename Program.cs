@@ -18,8 +18,12 @@ namespace MyApp
             Parser parser = new Parser(lexer);
             parser.CheckIfValid();
 
-            Translator translator = new Translator(parser, lexer);
-            translator.TranslateToFile("output.js");
+            if (parser.compiled)
+            {
+                Console.WriteLine("JUHUH");
+                Translator translator = new Translator(parser, lexer);
+                translator.TranslateToFile("output.js");
+            }
         }
     }
 }
