@@ -255,10 +255,23 @@ namespace WC_Language
                         index++;
 
                         //Solange warten bis das open bracket kommt
-                        while (lexer.tokens[index] == TokenType.NEWLINE) { index++; }
+                        while (lexer.tokens[index] == TokenType.NEWLINE) 
+                        { index++; }
+                        int bracketCount = 1;
+                        int additionalIndex = 1;
                         if(lexer.tokens[index] == TokenType.OPENBRACKET)
                         {
                             //schauen ob es das passende close bracket gibt
+                            while(bracketCount != 0 && index + additionalIndex < lexer.tokens.Count)
+                            {
+                                if (lexer.tokens[index + additionalIndex] == TokenType.OPENBRACKET) { bracketCount++; }
+                                else if(lexer.tokens[index + additionalIndex] == TokenType.CLOSEDBRACKET) { bracketCount--; }
+                                additionalIndex++;
+                            }
+
+                            valid = bracketCount == 0;
+
+                            if (!valid) { Console.WriteLine("You need to close the bracket!!!"); }
                         }
                         else
                         {
